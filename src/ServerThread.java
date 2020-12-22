@@ -4,6 +4,8 @@ import models.User;
 import java.io.*;
 import java.net.Socket;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ServerThread extends Thread {
     Socket socket;
@@ -26,37 +28,67 @@ public class ServerThread extends Thread {
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             String typeOfConnection = inputStream.readObject().toString();
 
-            if(typeOfConnection.equals("sending login data")){
-                inputStream = new ObjectInputStream(socket.getInputStream());
-                User user = (User) inputStream.readObject();
-
-                Boolean isConnectionValid;
-                if(validLoginData(user)){
-                    isConnectionValid=true;
+            switch (typeOfConnection){
+                case "sending login data":{
+                    inputStream = new ObjectInputStream(socket.getInputStream());
+                    User user = (User) inputStream.readObject();
+                    boolean isConnectionValid= validLoginData(user);
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(isConnectionValid);
+                    break;
                 }
-                else{
-                    isConnectionValid = false;
+                case "sending book data":{
+                    inputStream = new ObjectInputStream(socket.getInputStream());
+                    Book book = (Book) inputStream.readObject();
+                    System.out.println(book.toString());
+                    addBook(book);
+                    break;
                 }
-
-                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                outputStream.writeObject(isConnectionValid);
-
-                socket.close();
+                case "sending register data":{
+                    inputStream = new ObjectInputStream(socket.getInputStream());
+                    User user = (User) inputStream.readObject();
+                    addUser(user);
+                    break;
+                }
+                case "get books":{
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getBooks());
+                    break;
+                }
+                default:
+                    System.out.println("Type of connection is not correct.");
+                    break;
             }
-
-            if(typeOfConnection.equals("sending book data")){
-                inputStream = new ObjectInputStream(socket.getInputStream());
-                Book book = (Book) inputStream.readObject();
-                System.out.println(book.toString());
-                addBook(book);
-                socket.close();
-            }
-
+            socket.close();
 
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Client closed connection.");
             e.printStackTrace();
         }
+    }
+
+    private ArrayList<Book> getBooks(){
+        try {
+            Statement stmt=connection.createStatement();
+            String query = "select * from books";
+            ResultSet rs=stmt.executeQuery(query);
+            Book book;
+            ArrayList<Book> books = new ArrayList<>();
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String genre = rs.getString("genre");
+                LocalDate publishDate = rs.getDate("publish_date").toLocalDate();
+                String status = rs.getString("status");
+                book = new Book(title,author,genre,publishDate, status);
+                books.add(book);
+            }
+            return books;
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void addBook(Book book){
@@ -89,20 +121,39 @@ public class ServerThread extends Thread {
         }
     }
 
+    private void addUser(User user){
+        try {
+            String query = " insert into users (username, password, first_name, last_name, country, gender, favourite_genre,favourite_author)"
+                    + " values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString (1, user.username);
+            preparedStmt.setString (2, user.password);
+            preparedStmt.setString (3, user.firstName);
+            preparedStmt.setString (4, user.lastName);
+            preparedStmt.setString (5, user.country);
+            preparedStmt.setString (6, user.gender);
+            preparedStmt.setString (7, user.favouriteGenre);
+            preparedStmt.setString (8, user.favouriteAuthor);
+            preparedStmt.execute();
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+    }
+
     private Boolean validLoginData(User user){
         try {
             Statement stmt=connection.createStatement();
-            String query = "select password from users where username=\'" + user.username + "\'";
+            String query = "select password from users where username='" + user.username + "'";
             ResultSet rs=stmt.executeQuery(query);
             String dbPassword = "";
             while (rs.next()) {
                 dbPassword = rs.getString("password");
             }
 
-            if(user.password.equals(dbPassword))
-                return true;
-            else
-                return false;
+            return user.password.equals(dbPassword);
 
         } catch (SQLException e) {
             System.out.println("Connection error");
