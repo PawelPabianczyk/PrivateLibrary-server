@@ -30,7 +30,6 @@ public class ServerThread extends Thread {
 
             switch (typeOfConnection){
                 case "sending login data":{
-                    inputStream = new ObjectInputStream(socket.getInputStream());
                     User user = (User) inputStream.readObject();
                     boolean isConnectionValid= validLoginData(user);
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -38,14 +37,12 @@ public class ServerThread extends Thread {
                     break;
                 }
                 case "sending book data":{
-                    inputStream = new ObjectInputStream(socket.getInputStream());
                     Book book = (Book) inputStream.readObject();
-                    System.out.println(book.toString());
-                    addBook(book);
+                    String username = (String)inputStream.readObject();
+                    addBook(book, username);
                     break;
                 }
                 case "sending register data":{
-                    inputStream = new ObjectInputStream(socket.getInputStream());
                     User user = (User) inputStream.readObject();
                     addUser(user);
                     break;
@@ -91,7 +88,7 @@ public class ServerThread extends Thread {
         return null;
     }
 
-    private void addBook(Book book){
+    private void addBook(Book book, String username){
         try {
             String query = " insert into books (title, author, genre, publisher, language, description, publish_date,date_of_return,status)"
                     + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -113,6 +110,15 @@ public class ServerThread extends Thread {
                 preparedStmt.setDate   (8, java.sql.Date.valueOf(book.returnDate));
                 preparedStmt.setString (9, "borrowed");
             }
+            preparedStmt.execute();
+
+            int userId = getUserId(username);
+            int bookId = getBookId(book.title, book.author);
+
+            query ="insert into user_book (id_user, id_book, date_added) values(?,?,now())";
+            preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setInt (1, userId);
+            preparedStmt.setInt (2, bookId);
             preparedStmt.execute();
 
         } catch (SQLException e) {
@@ -152,7 +158,6 @@ public class ServerThread extends Thread {
             while (rs.next()) {
                 dbPassword = rs.getString("password");
             }
-
             return user.password.equals(dbPassword);
 
         } catch (SQLException e) {
@@ -160,5 +165,43 @@ public class ServerThread extends Thread {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private int getUserId(String username){
+        try {
+            Statement stmt=connection.createStatement();
+            String query = "select id_user from users where username='" + username + "'";
+            ResultSet rs=stmt.executeQuery(query);
+            int id = -1;
+            while (rs.next()) {
+                id = rs.getInt("id_user");
+            }
+
+            return id;
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    private int getBookId(String title, String author){
+        try {
+            Statement stmt=connection.createStatement();
+            String query = "select id_book from books where title='" + title + "' and author='" + author + "'";
+            ResultSet rs=stmt.executeQuery(query);
+            int id = -1;
+            while (rs.next()) {
+                id = rs.getInt("id_book");
+            }
+
+            return id;
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

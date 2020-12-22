@@ -14,25 +14,42 @@ public class Book implements Serializable {
     public String language;
     public String genre;
     public String description;
+    public String status;
 
     public Book(){
         this.id = ++amount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Book(String title, String author, String genre, LocalDate publishDate, String status){
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.publishDate = publishDate;
+        this.status = status;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setAuthor(String author) {
         this.author = author;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public void setPublishDate(LocalDate publishDate) {
@@ -43,12 +60,52 @@ public class Book implements Serializable {
         this.returnDate = returnDate;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public LocalDate getPublishDate() {
+        return publishDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override
