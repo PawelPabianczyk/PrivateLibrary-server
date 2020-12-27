@@ -4,28 +4,20 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Book implements Serializable {
-    public static int amount = 0;
-    public int id;
     public String title;
     public String author;
+    public String genre;
     public String publisher;
+    public String language;
+    public String description;
     public LocalDate publishDate;
     public LocalDate returnDate;
-    public String language;
-    public String genre;
-    public String description;
     public String status;
 
-    public Book(){
-        this.id = ++amount;
-    }
+    public String owner;
+    public LocalDate dateAdded;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public Book() {
     }
 
     public Book(String title, String author, String genre, LocalDate publishDate, String status){
@@ -36,83 +28,106 @@ public class Book implements Serializable {
         this.status = status;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
+    public Book(String title, String author, String genre, String owner, LocalDate dateAdded){
         this.title = title;
-    }
-
-    public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public void setPublishDate(LocalDate publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public void setGenre(String genre) {
         this.genre = genre;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getId() {
-        return id;
+        this.owner = owner;
+        this.dateAdded = dateAdded;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getAuthor() {
         return author;
     }
 
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public LocalDate getPublishDate() {
-        return publishDate;
-    }
-
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-
-    public String getLanguage() {
-        return language;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getGenre() {
         return genre;
     }
 
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(LocalDate publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", publishDate=" + publishDate +

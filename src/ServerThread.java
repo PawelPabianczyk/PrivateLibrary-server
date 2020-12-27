@@ -47,9 +47,17 @@ public class ServerThread extends Thread {
                     addUser(user);
                     break;
                 }
-                case "get books":{
+
+                case "get all books":{
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                    outputStream.writeObject(getBooks());
+                    outputStream.writeObject(getAllBooks());
+                    break;
+                }
+
+                case "get books":{
+                    String username = (String)inputStream.readObject();
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getBooks(username));
                     break;
                 }
                 default:
@@ -64,10 +72,12 @@ public class ServerThread extends Thread {
         }
     }
 
-    private ArrayList<Book> getBooks(){
+    private ArrayList<Book> getBooks(String username){
         try {
             Statement stmt=connection.createStatement();
-            String query = "select * from books";
+            String query = "select b.title, b.author, b.genre, b.publish_date, b.status from books b " +
+                    "natural join user_book ub " +
+                    "natural join users u where u.username='" + username + "'";
             ResultSet rs=stmt.executeQuery(query);
             Book book;
             ArrayList<Book> books = new ArrayList<>();
@@ -78,6 +88,34 @@ public class ServerThread extends Thread {
                 LocalDate publishDate = rs.getDate("publish_date").toLocalDate();
                 String status = rs.getString("status");
                 book = new Book(title,author,genre,publishDate, status);
+                book.setOwner(username);
+                books.add(book);
+            }
+            return books;
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private ArrayList<Book> getAllBooks(){
+        try {
+            Statement stmt=connection.createStatement();
+            String query = "select b.title, b.author, b.genre, u.username, ub.date_added from books b " +
+                    "natural join user_book ub " +
+                    "natural join users u";
+            ResultSet rs=stmt.executeQuery(query);
+            Book book;
+            ArrayList<Book> books = new ArrayList<>();
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String genre = rs.getString("genre");
+                String owner = rs.getString("username");
+                LocalDate dateAdded = rs.getDate("date_added").toLocalDate();
+
+                book = new Book(title,author,genre,owner, dateAdded);
                 books.add(book);
             }
             return books;
