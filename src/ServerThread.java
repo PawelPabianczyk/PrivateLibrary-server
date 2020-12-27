@@ -29,32 +29,32 @@ public class ServerThread extends Thread {
             String typeOfConnection = inputStream.readObject().toString();
 
             switch (typeOfConnection){
-                case "sending login data":{
+                case "PUT login":{
                     User user = (User) inputStream.readObject();
                     boolean isConnectionValid= validLoginData(user);
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                     outputStream.writeObject(isConnectionValid);
                     break;
                 }
-                case "sending book data":{
+                case "POST books":{
                     Book book = (Book) inputStream.readObject();
                     String username = (String)inputStream.readObject();
                     addBook(book, username);
                     break;
                 }
-                case "sending register data":{
+                case "POST register":{
                     User user = (User) inputStream.readObject();
                     addUser(user);
                     break;
                 }
 
-                case "get all books":{
+                case "GET all books":{
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                     outputStream.writeObject(getAllBooks());
                     break;
                 }
 
-                case "get books":{
+                case "GET user books":{
                     String username = (String)inputStream.readObject();
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                     outputStream.writeObject(getBooks(username));
