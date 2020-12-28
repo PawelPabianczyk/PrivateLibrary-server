@@ -36,6 +36,12 @@ public class ServerThread extends Thread {
                     outputStream.writeObject(isConnectionValid);
                     break;
                 }
+                case "GET user data":{
+                    String username = (String) inputStream.readObject();
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getUser(username));
+                    break;
+                }
                 case "POST books":{
                     Book book = (Book) inputStream.readObject();
                     String username = (String)inputStream.readObject();
@@ -70,6 +76,31 @@ public class ServerThread extends Thread {
             System.out.println("Client closed connection.");
             e.printStackTrace();
         }
+    }
+
+    private User getUser(String username) {
+        try {
+            Statement stmt=connection.createStatement();
+            String query = "select * from users where username='" + username + "'";
+            ResultSet rs=stmt.executeQuery(query);
+            User user = null;
+            while (rs.next()) {
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String country = rs.getString("country");
+                String gender = rs.getString("gender");
+                String favGenre = rs.getString("favourite_genre");
+                String favAuthor = rs.getString("favourite_author");
+                user = new User(userName, password, firstName, lastName, country, gender, favGenre, favAuthor);
+            }
+            return user;
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private ArrayList<Book> getBooks(String username){

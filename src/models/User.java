@@ -12,6 +12,21 @@ public class User implements Serializable {
     public String favouriteGenre;
     public String favouriteAuthor;
 
+    public User() {
+    }
+
+    public User(String username, String password, String firstName, String lastName, String country,
+                String gender, String favouriteGenre, String favouriteAuthor) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.country = country;
+        this.gender = gender;
+        this.favouriteGenre = favouriteGenre;
+        this.favouriteAuthor = favouriteAuthor;
+    }
+
     @Override
     public String toString() {
         return "User{" +
