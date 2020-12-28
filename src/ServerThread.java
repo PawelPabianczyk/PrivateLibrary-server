@@ -53,6 +53,11 @@ public class ServerThread extends Thread {
                     addUser(user);
                     break;
                 }
+                case "POST personal data":{
+                    User user = (User) inputStream.readObject();
+                    updateUser(user);
+                    break;
+                }
 
                 case "GET all books":{
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -74,6 +79,24 @@ public class ServerThread extends Thread {
 
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Client closed connection.");
+            e.printStackTrace();
+        }
+    }
+
+    private void updateUser(User user) {
+        try {
+            String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, u.gender=?, u.favourite_genre=?, u.favourite_author=? WHERE username='" + user.username + "'";
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString (1, user.firstName);
+            preparedStmt.setString (2, user.lastName);
+            preparedStmt.setString (3, user.country);
+            preparedStmt.setString (4, user.gender);
+            preparedStmt.setString (5, user.favouriteGenre);
+            preparedStmt.setString (6, user.favouriteAuthor);
+            preparedStmt.execute();
+            }
+        catch (SQLException e) {
+            System.out.println("Connection error");
             e.printStackTrace();
         }
     }
