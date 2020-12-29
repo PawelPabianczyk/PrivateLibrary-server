@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2b27d990-5ed0-46c4-81a2-0ccf2bbd5dc9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/server/ServerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/ServerThread.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -125,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609155022074</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Add handling genres and publishers">
+      <created>1609240512993</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1609240512993</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -137,6 +145,7 @@
     <MESSAGE value="Add sending personal data" />
     <MESSAGE value="Add updating user data" />
     <MESSAGE value="Add new entities" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add new entities" />
+    <MESSAGE value="Add handling genres and publishers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add handling genres and publishers" />
   </component>
 </project>
