@@ -1,5 +1,4 @@
-import models.Book;
-import models.User;
+import models.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -65,7 +64,21 @@ public class ServerThread extends Thread {
                     updateUser(user);
                     break;
                 }
-
+                case "POST new genre": {
+                    Genre genre = (Genre) inputStream.readObject();
+                    addGenre(genre);
+                    break;
+                }
+                case "POST new publisher": {
+                    Publisher publisher = (Publisher) inputStream.readObject();
+                    addPublisher(publisher);
+                    break;
+                }
+                case "POST new author": {
+                    Author author = (Author) inputStream.readObject();
+                    addAuthor(author);
+                    break;
+                }
                 case "GET all books": {
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                     outputStream.writeObject(getAllBooks());
@@ -160,14 +173,14 @@ public class ServerThread extends Thread {
     private void updateUser(User user) {
         //TODO usunac favourite genre i author
         try {
-            String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, u.gender=?, u.favourite_genre=?, u.favourite_author=? WHERE username='" + user.username + "'";
+            String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, u.gender=?, u.favourite_genre=?, u.favourite_author=? WHERE username='" + user.getUsername() + "'";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, user.firstName);
-            preparedStmt.setString(2, user.lastName);
-            preparedStmt.setString(3, user.country);
-            preparedStmt.setString(4, user.gender);
-            preparedStmt.setString(5, user.favouriteGenre);
-            preparedStmt.setString(6, user.favouriteAuthor);
+            preparedStmt.setString(1, user.getFirstName());
+            preparedStmt.setString(2, user.getLastName());
+            preparedStmt.setString(3, user.getCountry());
+            preparedStmt.setString(4, user.getGender());
+            preparedStmt.setString(5, user.getFavouriteGenre());
+            preparedStmt.setString(6, user.getFavouriteAuthor());
             preparedStmt.execute();
         } catch (SQLException e) {
             System.out.println("Connection error");
@@ -286,24 +299,24 @@ public class ServerThread extends Thread {
                     + " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, book.title);
-            preparedStmt.setInt(2, getGenreId(book.genre));
-            preparedStmt.setInt(3, getPublisherId(book.publisher));
-            preparedStmt.setString(4, book.language);
-            preparedStmt.setString(5, book.description);
-            preparedStmt.setDate(6, java.sql.Date.valueOf(book.publishDate));
-            if (book.returnDate == null) {
+            preparedStmt.setString(1, book.getTitle());
+            preparedStmt.setInt(2, getGenreId(book.getGenre()));
+            preparedStmt.setInt(3, getPublisherId(book.getPublisher()));
+            preparedStmt.setString(4, book.getLanguage());
+            preparedStmt.setString(5, book.getDescription());
+            preparedStmt.setDate(6, java.sql.Date.valueOf(book.getPublishDate()));
+            if (book.getReturnDate() == null) {
                 preparedStmt.setDate(7, null);
                 preparedStmt.setString(8, "own");
             } else {
-                preparedStmt.setDate(7, java.sql.Date.valueOf(book.returnDate));
+                preparedStmt.setDate(7, java.sql.Date.valueOf(book.getReturnDate()));
                 preparedStmt.setString(8, "borrowed");
             }
             preparedStmt.execute();
 
             int userId = getUserId(username);
-            int bookId = getBookId(book.title, book.publisher);
-            int authorId = getAuthorId(book.author);
+            int bookId = getBookId(book.getTitle(), book.getPublisher());
+            int authorId = getAuthorId(book.getAuthor());
 
             query = "insert into author_book (id_author, id_book, date_added) values(?,?,now())";
             preparedStmt = connection.prepareStatement(query);
@@ -331,14 +344,67 @@ public class ServerThread extends Thread {
                     + " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, user.username);
-            preparedStmt.setString(2, user.password);
-            preparedStmt.setString(3, user.firstName);
-            preparedStmt.setString(4, user.lastName);
-            preparedStmt.setString(5, user.country);
-            preparedStmt.setString(6, user.gender);
-            preparedStmt.setString(7, user.favouriteGenre);
-            preparedStmt.setString(8, user.favouriteAuthor);
+            preparedStmt.setString(1, user.getUsername());
+            preparedStmt.setString(2, user.getPassword());
+            preparedStmt.setString(3, user.getFirstName());
+            preparedStmt.setString(4, user.getLastName());
+            preparedStmt.setString(5, user.getCountry());
+            preparedStmt.setString(6, user.getGender());
+            preparedStmt.setString(7, user.getFavouriteGenre());
+            preparedStmt.setString(8, user.getFavouriteAuthor());
+            preparedStmt.execute();
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+    }
+
+    private void addGenre(Genre genre) {
+        try {
+            String query = " insert into genres (name, type, description)"
+                    + " values (?, ?, ?)";
+
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, genre.getName());
+            preparedStmt.setString(2, genre.getType());
+            preparedStmt.setString(3, genre.getDescription());
+            preparedStmt.execute();
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+    }
+
+    private void addPublisher(Publisher publisher) {
+        try {
+            String query = " insert into publishers (name, date_of_foundation, description)"
+                    + " values (?, ?, ?)";
+
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, publisher.getName());
+            preparedStmt.setDate(2, java.sql.Date.valueOf(publisher.getDateOfFoundation()));
+            preparedStmt.setString(3, publisher.getDescription());
+            preparedStmt.execute();
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+    }
+
+    private void addAuthor(Author author) {
+        try {
+            String query = " insert into authors (first_name, last_name, country, gender, biography)"
+                    + " values (?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, author.getFirstName());
+            preparedStmt.setString(2, author.getLastName());
+            preparedStmt.setString(3, author.getCountry());
+            preparedStmt.setString(4, author.getGender());
+            preparedStmt.setString(5, author.getBiography());
             preparedStmt.execute();
 
         } catch (SQLException e) {
@@ -350,13 +416,13 @@ public class ServerThread extends Thread {
     private Boolean validLoginData(User user) {
         try {
             Statement stmt = connection.createStatement();
-            String query = "select password from users where username='" + user.username + "'";
+            String query = "select password from users where username='" + user.getUsername() + "'";
             ResultSet rs = stmt.executeQuery(query);
             String dbPassword = "";
             while (rs.next()) {
                 dbPassword = rs.getString("password");
             }
-            return user.password.equals(dbPassword);
+            return user.getPassword().equals(dbPassword);
 
         } catch (SQLException e) {
             System.out.println("Connection error");

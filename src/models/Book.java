@@ -4,18 +4,18 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Book implements Serializable {
-    public String title;
-    public String author;
-    public String genre;
-    public String publisher;
-    public String language;
-    public String description;
-    public LocalDate publishDate;
-    public LocalDate returnDate;
-    public String status;
+    private String title;
+    private String author;
+    private String genre;
+    private String publisher;
+    private String language;
+    private String description;
+    private LocalDate publishDate;
+    private LocalDate returnDate;
+    private String status;
 
-    public String owner;
-    public LocalDate dateAdded;
+    private String owner;
+    private LocalDate dateAdded;
 
     public Book() {
     }
