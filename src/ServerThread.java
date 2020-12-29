@@ -48,6 +48,12 @@ public class ServerThread extends Thread {
                     outputStream.writeObject(getFavouriteGenre(username));
                     break;
                 }
+                case "GET favourite author": {
+                    String username = (String) inputStream.readObject();
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getFavouriteAuthor(username));
+                    break;
+                }
                 case "POST books": {
                     Book book = (Book) inputStream.readObject();
                     String username = (String) inputStream.readObject();
@@ -230,6 +236,30 @@ public class ServerThread extends Thread {
                 return "no genre";
             else
                 return getGenreName(genreId);
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getFavouriteAuthor(String username) {
+        try {
+            Statement stmt = connection.createStatement();
+
+            String query = "select ab.id_author, count(*) quantity from author_book ab " +
+                    "NATURAL JOIN user_book ub " +
+                    "NATURAL JOIN users u WHERE u.username='" + username + "' " +
+                    "GROUP BY ab.id_author ORDER BY quantity DESC LIMIT 1";
+            ResultSet rs = stmt.executeQuery(query);
+            int authorId = 0;
+            while (rs.next()) {
+                authorId = rs.getInt("id_author");
+            }
+            if(authorId == 0)
+                return "no author";
+            else
+                return getAuthorName(authorId);
         } catch (SQLException e) {
             System.out.println("Connection error");
             e.printStackTrace();
