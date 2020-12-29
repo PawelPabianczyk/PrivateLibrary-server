@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b27d990-5ed0-46c4-81a2-0ccf2bbd5dc9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/Author.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/EType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/Genre.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/Publisher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,9 +27,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../client" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -120,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609151199191</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Add new entities">
+      <created>1609155022074</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1609155022074</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -131,6 +136,7 @@
     <MESSAGE value="Refactor ServerThread" />
     <MESSAGE value="Add sending personal data" />
     <MESSAGE value="Add updating user data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add updating user data" />
+    <MESSAGE value="Add new entities" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add new entities" />
   </component>
 </project>
