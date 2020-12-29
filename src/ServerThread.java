@@ -88,6 +88,11 @@ public class ServerThread extends Thread {
                     outputStream.writeObject(getAllPublishers());
                     break;
                 }
+                case "GET authors list": {
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getAllAuthors());
+                    break;
+                }
                 default:
                     System.out.println("Type of connection is not correct.");
                     break;
@@ -134,7 +139,26 @@ public class ServerThread extends Thread {
         return null;
     }
 
+    private ArrayList<String> getAllAuthors() {
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "select first_name, last_name from authors";
+            ResultSet rs = stmt.executeQuery(query);
+            ArrayList<String> publishers = new ArrayList<>();
+            while (rs.next()) {
+                String authorName = rs.getString("first_name") +" "+ rs.getString("last_name");
+                publishers.add(authorName);
+            }
+            return publishers;
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void updateUser(User user) {
+        //TODO usunac favourite genre i author
         try {
             String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, u.gender=?, u.favourite_genre=?, u.favourite_author=? WHERE username='" + user.username + "'";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
@@ -175,6 +199,7 @@ public class ServerThread extends Thread {
         }
         return null;
     }
+
     private String getFavouriteGenre(String username) {
         try {
             Statement stmt = connection.createStatement();
@@ -202,7 +227,8 @@ public class ServerThread extends Thread {
     private ArrayList<Book> getBooks(String username) {
         try {
             Statement stmt = connection.createStatement();
-            String query = "select b.title, b.author, b.id_genre, b.publish_date, b.status from books b " +
+            String query = "select b.title, ab.id_author, b.id_genre, b.publish_date, b.status from books b " +
+                    "natural join author_book ab " +
                     "natural join user_book ub " +
                     "natural join users u where u.username='" + username + "'";
             ResultSet rs = stmt.executeQuery(query);
@@ -210,7 +236,7 @@ public class ServerThread extends Thread {
             ArrayList<Book> books = new ArrayList<>();
             while (rs.next()) {
                 String title = rs.getString("title");
-                String author = rs.getString("author");
+                String author = getAuthorName(rs.getInt("id_author"));
                 String genre = getGenreName(rs.getInt("id_genre"));
                 LocalDate publishDate = rs.getDate("publish_date").toLocalDate();
                 String status = rs.getString("status");
@@ -229,7 +255,8 @@ public class ServerThread extends Thread {
     private ArrayList<Book> getAllBooks() {
         try {
             Statement stmt = connection.createStatement();
-            String query = "select b.title, b.author, b.id_genre, u.username, ub.date_added from books b " +
+            String query = "select b.title, ab.id_author, b.id_genre, u.username, ub.date_added from books b " +
+                    "natural join author_book ab " +
                     "natural join user_book ub " +
                     "natural join users u";
             ResultSet rs = stmt.executeQuery(query);
@@ -237,7 +264,7 @@ public class ServerThread extends Thread {
             ArrayList<Book> books = new ArrayList<>();
             while (rs.next()) {
                 String title = rs.getString("title");
-                String author = rs.getString("author");
+                String author = getAuthorName(rs.getInt("id_author"));
                 String genre = getGenreName(rs.getInt("id_genre"));
                 String owner = rs.getString("username");
                 LocalDate dateAdded = rs.getDate("date_added").toLocalDate();
@@ -255,34 +282,42 @@ public class ServerThread extends Thread {
 
     private void addBook(Book book, String username) {
         try {
-            String query = " insert into books (title, author, id_genre, id_publisher, language, description, publish_date,date_of_return,status)"
-                    + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = " insert into books (title, id_genre, id_publisher, language, description, publish_date,date_of_return,status)"
+                    + " values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, book.title);
-            preparedStmt.setString(2, book.author);
-            preparedStmt.setInt(3, getGenreId(book.genre));
-            preparedStmt.setInt(4, getPublisherId(book.publisher));
-            preparedStmt.setString(5, book.language);
-            preparedStmt.setString(6, book.description);
-            preparedStmt.setDate(7, java.sql.Date.valueOf(book.publishDate));
+            preparedStmt.setInt(2, getGenreId(book.genre));
+            preparedStmt.setInt(3, getPublisherId(book.publisher));
+            preparedStmt.setString(4, book.language);
+            preparedStmt.setString(5, book.description);
+            preparedStmt.setDate(6, java.sql.Date.valueOf(book.publishDate));
             if (book.returnDate == null) {
-                preparedStmt.setDate(8, null);
-                preparedStmt.setString(9, "own");
+                preparedStmt.setDate(7, null);
+                preparedStmt.setString(8, "own");
             } else {
-                preparedStmt.setDate(8, java.sql.Date.valueOf(book.returnDate));
-                preparedStmt.setString(9, "borrowed");
+                preparedStmt.setDate(7, java.sql.Date.valueOf(book.returnDate));
+                preparedStmt.setString(8, "borrowed");
             }
             preparedStmt.execute();
 
             int userId = getUserId(username);
-            int bookId = getBookId(book.title, book.author);
+            int bookId = getBookId(book.title, book.publisher);
+            int authorId = getAuthorId(book.author);
+
+            query = "insert into author_book (id_author, id_book, date_added) values(?,?,now())";
+            preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setInt(1, authorId);
+            preparedStmt.setInt(2, bookId);
+            preparedStmt.execute();
 
             query = "insert into user_book (id_user, id_book, date_added) values(?,?,now())";
             preparedStmt = connection.prepareStatement(query);
             preparedStmt.setInt(1, userId);
             preparedStmt.setInt(2, bookId);
             preparedStmt.execute();
+
+
 
         } catch (SQLException e) {
             System.out.println("Connection error");
@@ -349,14 +384,36 @@ public class ServerThread extends Thread {
         return -1;
     }
 
-    private int getBookId(String title, String author) {
+    private int getBookId(String title, String publisher) {
         try {
             Statement stmt = connection.createStatement();
-            String query = "select id_book from books where title='" + title + "' and author='" + author + "'";
+            String query = "select id_book from books " +
+                    "where title='" + title + "' and id_publisher=" + getPublisherId(publisher);
             ResultSet rs = stmt.executeQuery(query);
             int id = -1;
             while (rs.next()) {
                 id = rs.getInt("id_book");
+            }
+            return id;
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    private int getAuthorId(String Name) {
+        String[] parts = Name.split(" ");
+        String firstName = parts[0];
+        String lastName = parts[1];
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "select id_author from authors where first_name='" + firstName + "' and last_name='" + lastName + "'";
+            ResultSet rs = stmt.executeQuery(query);
+            int id = -1;
+            while (rs.next()) {
+                id = rs.getInt("id_author");
             }
 
             return id;
@@ -417,6 +474,27 @@ public class ServerThread extends Thread {
             }
 
             return name;
+
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getAuthorName(int id) {
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "select first_name, last_name from authors where id_author=" + id;
+            ResultSet rs = stmt.executeQuery(query);
+            String firstName = null;
+            String lastName = null;
+            while (rs.next()) {
+                firstName = rs.getString("first_name");
+                lastName = rs.getString("last_name");
+            }
+
+            return firstName+" "+lastName;
 
         } catch (SQLException e) {
             System.out.println("Connection error");
