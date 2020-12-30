@@ -179,14 +179,13 @@ public class ServerThread extends Thread {
     private void updateUser(User user) {
         //TODO usunac favourite genre i author
         try {
-            String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, u.gender=?, u.favourite_genre=?, u.favourite_author=? WHERE username='" + user.getUsername() + "'";
+            String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, " +
+                    "u.gender=? WHERE username='" + user.getUsername() + "'";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, user.getFirstName());
             preparedStmt.setString(2, user.getLastName());
             preparedStmt.setString(3, user.getCountry());
             preparedStmt.setString(4, user.getGender());
-            preparedStmt.setString(5, user.getFavouriteGenre());
-            preparedStmt.setString(6, user.getFavouriteAuthor());
             preparedStmt.execute();
         } catch (SQLException e) {
             System.out.println("Connection error");
@@ -207,9 +206,7 @@ public class ServerThread extends Thread {
                 String lastName = rs.getString("last_name");
                 String country = rs.getString("country");
                 String gender = rs.getString("gender");
-                String favGenre = rs.getString("favourite_genre");
-                String favAuthor = rs.getString("favourite_author");
-                user = new User(userName, password, firstName, lastName, country, gender, favGenre, favAuthor);
+                user = new User(userName, password, firstName, lastName, country, gender);
             }
             return user;
         } catch (SQLException e) {
@@ -370,8 +367,8 @@ public class ServerThread extends Thread {
 
     private void addUser(User user) {
         try {
-            String query = " insert into users (username, password, first_name, last_name, country, gender, favourite_genre,favourite_author)"
-                    + " values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = " insert into users (username, password, first_name, last_name, country, gender)"
+                    + " values (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, user.getUsername());
@@ -380,8 +377,6 @@ public class ServerThread extends Thread {
             preparedStmt.setString(4, user.getLastName());
             preparedStmt.setString(5, user.getCountry());
             preparedStmt.setString(6, user.getGender());
-            preparedStmt.setString(7, user.getFavouriteGenre());
-            preparedStmt.setString(8, user.getFavouriteAuthor());
             preparedStmt.execute();
 
         } catch (SQLException e) {
