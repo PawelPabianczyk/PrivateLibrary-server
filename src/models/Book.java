@@ -13,9 +13,15 @@ public class Book implements Serializable {
     private LocalDate publishDate;
     private LocalDate returnDate;
     private String status;
-
     private String owner;
     private LocalDate dateAdded;
+
+    /*with MongoDB*/
+    /*arrays contain ids*/
+    private String[] genres;
+    private String[] publishers;
+    private String[] authors;
+    private String[] owners;
 
     public Book() {
     }
@@ -108,6 +114,10 @@ public class Book implements Serializable {
         this.status = status;
     }
 
+    public void setOwners(String[] owners) {
+        this.owners = owners;
+    }
+
     public String getOwner() {
         return owner;
     }
@@ -124,17 +134,48 @@ public class Book implements Serializable {
         this.dateAdded = dateAdded;
     }
 
+    public String[] getGenres() {
+        return genres;
+    }
+
+    public void setGenres(String[] genres) {
+        this.genres = genres;
+    }
+
+    public String[] getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(String[] publishers) {
+        this.publishers = publishers;
+    }
+
+    public String[] getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(String[] authors) {
+        this.authors = authors;
+    }
+
+    public String[] getOwners() {
+        return owners;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
                 ", author='" + author + '\'' +
+                ", owner='" + owner + '\'' +
+                ", dateAdded='" + dateAdded + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", publishDate=" + publishDate +
                 ", returnDate=" + returnDate +
                 ", language='" + language + '\'' +
                 ", genre='" + genre + '\'' +
                 ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ServerThread extends Thread {
     Socket socket;
@@ -90,11 +91,25 @@ public class ServerThread extends Thread {
                     outputStream.writeObject(getAllBooks());
                     break;
                 }
-
+                case "GET all books with phrase": {
+                    String category = (String) inputStream.readObject();
+                    String phrase = (String) inputStream.readObject();
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getAllBooks(category, phrase));
+                    break;
+                }
                 case "GET user books": {
                     String username = (String) inputStream.readObject();
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                     outputStream.writeObject(getBooks(username));
+                    break;
+                }
+                case "GET user books with phrase": {
+                    String category = (String) inputStream.readObject();
+                    String phrase = (String) inputStream.readObject();
+                    String username = (String) inputStream.readObject();
+                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                    outputStream.writeObject(getBooks(username, category, phrase));
                     break;
                 }
                 case "GET genres list": {
@@ -177,7 +192,6 @@ public class ServerThread extends Thread {
     }
 
     private void updateUser(User user) {
-        //TODO usunac favourite genre i author
         try {
             String query = "UPDATE users u SET u.first_name=?, u.last_name=?, u.country=?, " +
                     "u.gender=? WHERE username='" + user.getUsername() + "'";
@@ -292,6 +306,53 @@ public class ServerThread extends Thread {
         return null;
     }
 
+    private ArrayList<Book> getBooks(String username, String category, String phrase) {
+        try {
+            Statement stmt = connection.createStatement();
+            String query;
+            switch (category){
+                case "Title":
+                    query = "select b.title, ab.id_author, b.id_genre, b.publish_date, b.status from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where u.username='" + username + "' and b.title='"+ phrase +"'";
+                    break;
+                case "Author":
+                    query = "select b.title, ab.id_author, b.id_genre, b.publish_date, b.status from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where u.username='" + username + "' and ab.id_author='"+ getAuthorId(phrase) +"'";
+                    break;
+                case "Genre":
+                    query = "select b.title, ab.id_author, b.id_genre, b.publish_date, b.status from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where u.username='" + username + "' and b.id_genre='"+ getGenreId(phrase) +"'";
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + category);
+            }
+            ResultSet rs = stmt.executeQuery(query);
+            Book book;
+            ArrayList<Book> books = new ArrayList<>();
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String author = getAuthorName(rs.getInt("id_author"));
+                String genre = getGenreName(rs.getInt("id_genre"));
+                LocalDate publishDate = rs.getDate("publish_date").toLocalDate();
+                String status = rs.getString("status");
+                book = new Book(title, author, genre, publishDate, status);
+                book.setOwner(username);
+                books.add(book);
+            }
+            return books;
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private ArrayList<Book> getAllBooks() {
         try {
             Statement stmt = connection.createStatement();
@@ -299,6 +360,60 @@ public class ServerThread extends Thread {
                     "natural join author_book ab " +
                     "natural join user_book ub " +
                     "natural join users u";
+            ResultSet rs = stmt.executeQuery(query);
+            Book book;
+            ArrayList<Book> books = new ArrayList<>();
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String author = getAuthorName(rs.getInt("id_author"));
+                String genre = getGenreName(rs.getInt("id_genre"));
+                String owner = rs.getString("username");
+                LocalDate dateAdded = rs.getDate("date_added").toLocalDate();
+
+                book = new Book(title, author, genre, owner, dateAdded);
+                books.add(book);
+            }
+            return books;
+        } catch (SQLException e) {
+            System.out.println("Connection error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private ArrayList<Book> getAllBooks(String category, String phrase) {
+        try {
+            Statement stmt = connection.createStatement();
+            String query;
+            switch (category){
+                case "Title":
+                    query = "select b.title, ab.id_author, b.id_genre, u.username, ub.date_added from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where b.title='" + phrase + "'";
+                    break;
+                case "Author":
+                    query = "select b.title, ab.id_author, b.id_genre, u.username, ub.date_added from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where ab.id_author='" + getAuthorId(phrase) + "'";
+                    break;
+                case "Genre":
+                    query = "select b.title, ab.id_author, b.id_genre, u.username, ub.date_added from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where b.id_genre='" + getGenreId(phrase) + "'";
+                    break;
+                case "Owner":
+                    query = "select b.title, ab.id_author, b.id_genre, u.username, ub.date_added from books b " +
+                            "natural join author_book ab " +
+                            "natural join user_book ub " +
+                            "natural join users u where u.username='" + phrase + "'";
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + category);
+            }
+
             ResultSet rs = stmt.executeQuery(query);
             Book book;
             ArrayList<Book> books = new ArrayList<>();
@@ -494,8 +609,8 @@ public class ServerThread extends Thread {
         return -1;
     }
 
-    private int getAuthorId(String Name) {
-        String[] parts = Name.split(" ");
+    private int getAuthorId(String name) {
+        String[] parts = name.split(" ");
         String firstName = parts[0];
         String lastName = parts[1];
         try {
