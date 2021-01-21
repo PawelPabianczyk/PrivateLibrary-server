@@ -18,4 +18,8 @@ public class Server {
             new ServerThread(socket).start();
         }
     }
+
+    public static int getPORT() {
+        return PORT;
+    }
 }

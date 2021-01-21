@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2b27d990-5ed0-46c4-81a2-0ccf2bbd5dc9" name="Default Changelist" comment="Refactor user and author details">
+    <list default="true" id="2b27d990-5ed0-46c4-81a2-0ccf2bbd5dc9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ServerThreadTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/server/ServerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/ServerThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/server/models/Book.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/models/Book.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/server/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/models/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/server/models/Person.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/models/Person.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Person.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +20,7 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -33,16 +33,32 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../serverMDB" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../restapi" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="com.intellij.jarRepository.settings.RemoteRepositoriesConfigurable" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="" />
+      <recent name="test" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre">
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Server" />
       <module name="server" />
@@ -50,8 +66,52 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ServerThreadTest.getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
+      <option name="METHOD_NAME" value="getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerThreadTest.getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
+      <option name="METHOD_NAME" value="getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerThreadTest.getUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
+      <option name="METHOD_NAME" value="getUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerThreadTest.getUser_WhenUserNotExistsInDB_ReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
+      <option name="METHOD_NAME" value="getUser_WhenUserNotExistsInDB_ReturnNull" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre" />
+        <item itemvalue="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre" />
+        <item itemvalue="JUnit.ServerThreadTest.getUser_WhenUserNotExistsInDB_ReturnNull" />
+        <item itemvalue="JUnit.ServerThreadTest.getUser" />
         <item itemvalue="Application.Server" />
       </list>
     </recent_temporary>
@@ -180,7 +240,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609583338241</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Add searching in books and explore">
+      <created>1609777840845</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1609777840845</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -199,6 +266,7 @@
     <MESSAGE value="Add favourite author" />
     <MESSAGE value="Refactor user and author details" />
     <MESSAGE value="Refactor models" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor models" />
+    <MESSAGE value="Add searching in books and explore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add searching in books and explore" />
   </component>
 </project>

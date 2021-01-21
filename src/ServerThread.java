@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class ServerThread extends Thread {
     Socket socket;
@@ -207,7 +206,7 @@ public class ServerThread extends Thread {
         }
     }
 
-    private User getUser(String username) {
+    public User getUser(String username) {
         try {
             Statement stmt = connection.createStatement();
             String query = "select * from users where username='" + username + "'";
@@ -230,7 +229,7 @@ public class ServerThread extends Thread {
         return null;
     }
 
-    private String getFavouriteGenre(String username) {
+    public String getFavouriteGenre(String username) {
         try {
             Statement stmt = connection.createStatement();
 
