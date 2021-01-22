@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b27d990-5ed0-46c4-81a2-0ccf2bbd5dc9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ServerThreadTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/server/ServerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/ServerThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/server/models/Person.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/server/models/Person.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerThreadTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerThreadTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +41,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../restapi" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../client" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -58,7 +56,7 @@
       <recent name="test" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre">
+  <component name="RunManager" selected="JUnit.ServerThreadTest.getFavouriteGenre_WhenUserHasFavGenre_ReturnGenre">
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Server" />
       <module name="server" />
@@ -66,11 +64,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerThreadTest.getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ServerThreadTest.getFavouriteAuthor_WhenUserHasFavAuthor_ReturnAuthor" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
-      <option name="METHOD_NAME" value="getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre" />
+      <option name="METHOD_NAME" value="getFavouriteAuthor_WhenUserHasFavAuthor_ReturnAuthor" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerThreadTest.getFavouriteAuthor_WhenUserHasNoFavAuthor_ReturnNoAuthor" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
+      <option name="METHOD_NAME" value="getFavouriteAuthor_WhenUserHasNoFavAuthor_ReturnNoAuthor" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerThreadTest.getFavouriteGenre_WhenUserHasFavGenre_ReturnGenre" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
+      <option name="METHOD_NAME" value="getFavouriteGenre_WhenUserHasFavGenre_ReturnGenre" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -86,33 +104,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerThreadTest.getUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
-      <option name="METHOD_NAME" value="getUser" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerThreadTest.getUser_WhenUserNotExistsInDB_ReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ServerThreadTest" />
-      <option name="METHOD_NAME" value="getUser_WhenUserNotExistsInDB_ReturnNull" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre" />
-        <item itemvalue="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre" />
-        <item itemvalue="JUnit.ServerThreadTest.getUser_WhenUserNotExistsInDB_ReturnNull" />
-        <item itemvalue="JUnit.ServerThreadTest.getUser" />
+        <item itemvalue="JUnit.ServerThreadTest.getFavouriteGenre_WhenUserHasFavGenre_ReturnGenre" />
+        <item itemvalue="JUnit.ServerThreadTest.getFavouriteAuthor_WhenUserHasFavAuthor_ReturnAuthor" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="JUnit.ServerThreadTest.getFavouriteAuthor_WhenUserHasNoFavAuthor_ReturnNoAuthor" />
+        <item itemvalue="JUnit.ServerThreadTest.getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre" />
       </list>
     </recent_temporary>
   </component>
@@ -247,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609777840845</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Add tests to server">
+      <created>1611243311586</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1611243311586</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -267,6 +272,7 @@
     <MESSAGE value="Refactor user and author details" />
     <MESSAGE value="Refactor models" />
     <MESSAGE value="Add searching in books and explore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add searching in books and explore" />
+    <MESSAGE value="Add tests to server" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add tests to server" />
   </component>
 </project>

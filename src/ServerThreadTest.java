@@ -39,9 +39,9 @@ class ServerThreadTest {
     }
 
     @Test
-    void getFavouriteGenre_WhenUsernameHasFavGenre_ReturnGenre() {
-        String username = "pawpab";
-        String genreTest = "Horror";
+    void getFavouriteGenre_WhenUserHasFavGenre_ReturnGenre() {
+        String username = "test";
+        String genreTest = "Fantasy";
 
         String genreDB = serverThread.getFavouriteGenre(username);
 
@@ -49,12 +49,30 @@ class ServerThreadTest {
     }
 
     @Test
-    void getFavouriteGenre_WhenUsernameHasNoFavGenre_ReturnNoGenre() {
+    void getFavouriteGenre_WhenUserHasNoFavGenre_ReturnNoGenre() {
         String username = "pudzian";
         String genreTest = "no genre";
 
         String genreDB = serverThread.getFavouriteGenre(username);
 
         Assertions.assertEquals(genreTest,genreDB);
+    }
+
+    @Test
+    void getFavouriteAuthor_WhenUserHasFavAuthor_ReturnAuthor(){
+        String username = "test";
+        String authorName = "Andrzej Pilipiuk";
+
+        String authorDb = serverThread.getFavouriteAuthor(username);
+        Assertions.assertEquals(authorName,authorDb);
+    }
+
+    @Test
+    void getFavouriteAuthor_WhenUserHasNoFavAuthor_ReturnNoAuthor(){
+        String username = "pudzian";
+        String authorName = "no author";
+
+        String authorDb = serverThread.getFavouriteAuthor(username);
+        Assertions.assertEquals(authorName,authorDb);
     }
 }

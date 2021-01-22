@@ -253,7 +253,7 @@ public class ServerThread extends Thread {
         return null;
     }
 
-    private String getFavouriteAuthor(String username) {
+    public String getFavouriteAuthor(String username) {
         try {
             Statement stmt = connection.createStatement();
 
