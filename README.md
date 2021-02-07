@@ -65,4 +65,4 @@ Email - pawel.pabianczyk1999@gmail.com
 
 LinkedIn - [Pawel Pabianczyk](https://www.linkedin.com/in/pawe%C5%82-pabia%C5%84czyk-a32693171/)
 
-Project Link: [https://github.com/PawelPabianczyk/PrivateLibrary-client](https://github.com/PawelPabianczyk/PrivateLibrary-client)
+Project Link: [https://github.com/PawelPabianczyk/PrivateLibrary-server](https://github.com/PawelPabianczyk/PrivateLibrary-server)
